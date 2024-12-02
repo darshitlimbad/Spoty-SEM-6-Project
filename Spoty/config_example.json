@@ -1,0 +1,7 @@
+"Rename this file to config.json and enter below details after that delete this line."
+
+{
+    "TOKEN": "YOUR_DISCORD_BOT_TOKEN",
+    "PREFIX": "!",
+    "ADMINID": "YOUR_DISCORD_ADMIN_ID"  
+}

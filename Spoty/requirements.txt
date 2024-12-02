@@ -1,0 +1,13 @@
+discord.py
+logging
+colorlog
+
+# for UBUNTU / LINUX
+# PyNaCl
+
+
+yt_dlp
+# If using this package youtube responds something like this:
+# ERROR: [youtube] sAzlWScHTc4: Sign in to confirm you’re not a bot. This helps protect our community.
+# then try downloading yt_dlp nightly by running this in your bash
+# pip install -U --force-reinstall https://github.com/yt-dlp/yt-dlp/archive/master.tar.gz
