@@ -1,0 +1,8 @@
+{
+    "database": {
+        "host": "Your Host",
+        "username": "Your Username",
+        "password": "Your Password",
+        "dbname": "Your database name"
+    }
+}
