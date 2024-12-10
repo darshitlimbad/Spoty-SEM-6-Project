@@ -54,7 +54,7 @@ if (isset($_COOKIE['refresh_token'])) {
             setcookie('refresh_token', $tokenData['refresh_token'], time() + 60*60*24*30, "/"); 
             $_SESSION['user_id'] = $userData['id'];
             $_SESSION['username'] = $userData['username'];
-            header("Location: /PHP/index.php?update=data_Updated");
+            header("Location: /PHP/index.php");
             exit;
         }
     } else {

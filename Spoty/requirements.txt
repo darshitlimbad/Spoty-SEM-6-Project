@@ -2,8 +2,7 @@ discord.py
 logging
 colorlog
 
-# for UBUNTU / LINUX
-# PyNaCl
+PyNaCl
 
 
 yt_dlp

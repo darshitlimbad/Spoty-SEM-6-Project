@@ -1,18 +1,7 @@
 import json
 import mysql.connector
 from mysql.connector import errorcode
-import colorlog
-import logging
-
-# Set up logging with color formatting
-handler = colorlog.StreamHandler()
-handler.setFormatter(colorlog.ColoredFormatter(
-    "%(log_color)s %(asctime)s %(levelname)s: %(message)s"
-))
-
-logger = colorlog.getLogger('colored_logger')
-logger.addHandler(handler)
-logger.setLevel(logging.INFO)
+from Modules.logger import logger
 
 
 class MySQLConnection:
@@ -66,6 +55,7 @@ class MySQLConnection:
             """
             cursor.execute(table_query)
             logger.info("Table `users` checked/created successfully.")
+            print("-" * 100)
 
         except FileNotFoundError:
             logger.error("Config file not found.")
