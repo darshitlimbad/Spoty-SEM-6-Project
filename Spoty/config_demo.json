@@ -1,0 +1,14 @@
+{
+    "discord":{
+        "TOKEN": "YOUR_DISCORD_BOT_TOKEN",
+        "PREFIX": "!",
+        "ADMINID": "YOUR_DISCORD_ADMIN_ID"  
+    },
+  
+    "database": {
+        "host": "Your Host",
+        "username": "Your Username",
+        "password": "Your Password",
+        "dbname": "Your database name"
+    }
+}

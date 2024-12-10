@@ -6,22 +6,24 @@ import discord
 from discord.ext import commands
 
 from Modules.CustomQueue import Queue
+from Modules.DB.database import MySQLConnection
+
 import json
 
 # Load the configuration file
 with open('config.json', 'r') as file:
     config = json.load(file)
 
-discord_token = config.get("TOKEN",None)
-adminID = config.get("ADMINID",None)
-prefix= config.get("PREFIX",'!')
+discord_token = config["discord"].get("TOKEN",None)
+adminID = config["discord"].get("ADMINID",None)
+prefix= config["discord"].get("PREFIX",'!')
 
 if not discord_token:
     print("\x1b[31m DISCORD TOKEN IS MISSING \x1b[0m")
     exit()
 elif not adminID:
-    print("\x1b[31m Admin ID IS MISSING \x1b[0m")
-    exit()
+    adminID= "1234"
+    print("\x1b[31m Admin ID was not proovided so using 1234. \x1b[0m")
     
 # Set up logging with color formatting
 handler = colorlog.StreamHandler()
@@ -902,10 +904,17 @@ def print_license():
         - LinkedIn: https://www.linkedin.com/in/darshit-limbad/
     """
     print(license_text)
-                
-if __name__ == '__main__':
+    
+def main():
+    # Prints LICENCE
     print_license()
     print("-" * 100)
     
+    db = MySQLConnection()
+    conn = db.get_connection()
+    
     bot = Spoty_bot()
     bot.run(discord_token)
+
+if __name__ == '__main__':
+    main()
