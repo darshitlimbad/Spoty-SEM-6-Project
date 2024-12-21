@@ -41,7 +41,8 @@ try {
             access_token TEXT,                -- OAuth2 access token
             refresh_token TEXT,               -- OAuth2 refresh token
             token_expires_at DATETIME,        -- Expiry timestamp for the access token
-            last_login DATETIME               -- Timestamp of the last login
+            last_login DATETIME,               -- Timestamp of the last login
+            premium TINYINT(1) DEFAULT 0      -- Premium status
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     ";
     $pdo->exec($tableQuery);

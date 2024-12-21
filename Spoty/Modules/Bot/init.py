@@ -4,21 +4,22 @@ from discord.ext import commands
 
 from Modules.logger import logger
 from Modules.utils import *
+from Modules.DB import database
 
 # Load the configuration file
 with open('config.json', 'r') as file:
     config = json.load(file)
 
-discord_token = config["discord"].get("TOKEN",None)
-adminID = config["discord"].get("ADMINID",None)
-prefix= config["discord"].get("PREFIX",'!')
+discord_token = config["discord"].get("TOKEN", None)
+adminID = config["discord"].get("ADMINID", None)
+prefix = config["discord"].get("PREFIX", '!')
 
 if not discord_token:
-    print("\x1b[31m DISCORD TOKEN IS MISSING \x1b[0m")
+    logger.error("DISCORD TOKEN IS MISSING")
     exit()
 elif not adminID:
-    adminID= "1234"
-    print("\x1b[31m Admin ID was not proovided so using 1234. \x1b[0m")
+    adminID = "1234"
+    logger.warning("Admin ID was not provided so using 1234.")
 
 class Spoty_bot(commands.Bot):
     """Main bot class for handling commands and events."""
@@ -31,6 +32,12 @@ class Spoty_bot(commands.Bot):
         super().__init__(command_prefix=prefix, intents=discord.Intents.all())
         self.remove_command('help')
 
+    def run(self):
+        """
+        Run the bot by loading cogs and starting the bot with the Discord token.
+        """
+        super().run(discord_token)
+    
     async def on_ready(self):
         await self.tree.sync()
         logger.info("Bot is online and ready to serve.")
@@ -83,8 +90,14 @@ class Player(commands.Cog):
         self.current_ctx = None         # Tracks the current context for the bot
         self.current_volume = None      # Default volume level for playback
         self.Queue = Queue()            # Queue to manage upcoming songs
-        self.auto_play= False           # should auto play or not 
-        self.song_repeat=False          # Repeat the song or not
+        self.auto_play = False          # Should auto play or not 
+        self.song_repeat = False        # Repeat the song or not
+        
+        self.dbObj= database.MySQLConnection() # Database object
+        if self.dbObj.is_connected():
+            logger.info("Database connection established.")
+        else:
+            logger.error("Database connection failed.")
         
     async def is_bot_connected_to_voice(self, ctx) -> bool:
         """Check if the bot is connected to a voice channel."""
@@ -94,7 +107,7 @@ class Player(commands.Cog):
     async def join(self, ctx) -> bool:
         """Connect the bot to the user's voice channel."""
         try:
-            if not await self.is_bot_connected_to_voice(ctx) :
+            if not await self.is_bot_connected_to_voice(ctx):
                 if ctx.author.voice:
                     channel = ctx.author.voice.channel
                     await channel.connect(self_deaf=True)
@@ -115,7 +128,7 @@ class Player(commands.Cog):
             else:
                 embed = discord.Embed(
                     title="Error",
-                    description="Bot is already connected to voice channel.",
+                    description="Bot is already connected to a voice channel.",
                     color=discord.Color.red()
                 )
                 await ctx.send(embed=embed)
@@ -123,7 +136,7 @@ class Player(commands.Cog):
         except Exception as e:
             embed = discord.Embed(
                 title="Connection Error",
-                description=f"Failed to connect to the voice channel",
+                description="Failed to connect to the voice channel.",
                 color=discord.Color.red()
             )
             await ctx.send(embed=embed)
@@ -132,10 +145,7 @@ class Player(commands.Cog):
     
     async def is_user_authorized_to_control(self, ctx) -> bool:
         """Check if the user is authorized to control the bot."""
-        # print(ctx)
-        # print(ctx.voice_client)
-        
-        if ctx.voice_client and ( ( ctx.author.voice and (ctx.voice_client.channel == ctx.author.voice.channel) ) or (ctx.author.id == self.adminID) or (ctx.author.id == self.bot.user.id) ): # admin get's full permision
+        if ctx.voice_client and ((ctx.author.voice and (ctx.voice_client.channel == ctx.author.voice.channel)) or (ctx.author.id == self.adminID) or (ctx.author.id == self.bot.user.id)): # Admin gets full permission
             return True
         elif not hasattr(ctx.author, "voice"):
             embed = discord.Embed(
@@ -145,9 +155,9 @@ class Player(commands.Cog):
             )
         else:
             embed = discord.Embed(
-                    title="Error",
-                    description="You must be in the same voice channel as the bot to control it.",
-                    color=discord.Color.red()
+                title="Error",
+                description="You must be in the same voice channel as the bot to control it.",
+                color=discord.Color.red()
             )
             
         await ctx.send(embed=embed)
@@ -176,8 +186,8 @@ class Player(commands.Cog):
                     'options': '-vn',
                 }
                 
-                if self.auto_play is False :
-                    self.auto_play= True
+                if self.auto_play is False:
+                    self.auto_play = True
                     
                 song = self.Queue.get()
                 
@@ -190,7 +200,7 @@ class Player(commands.Cog):
                         if self.auto_play:
                             if self.song_repeat:
                                 source = discord.FFmpegPCMAudio(song['url'], **ffmpeg_options)
-                                source = discord.PCMVolumeTransformer(source, self.current_volume/100)
+                                source = discord.PCMVolumeTransformer(source, self.current_volume / 100)
                                 ctx.voice_client.play(source, after=lambda e: self.bot.loop.create_task(play_next_song(e)))
                                 
                                 embed = discord.Embed(title="Now Playing", description=f"**{song['title']}**", color=discord.Color.blue())
@@ -204,7 +214,7 @@ class Player(commands.Cog):
                         logger.warning("Bot disconnected from the voice channel, stopping playback.")
                      
                 source = discord.FFmpegPCMAudio(song['url'], **ffmpeg_options)
-                source = discord.PCMVolumeTransformer(source, self.current_volume/100)       
+                source = discord.PCMVolumeTransformer(source, self.current_volume / 100)       
                 ctx.voice_client.play(source, after=lambda e: self.bot.loop.create_task(play_next_song(e)))
         
                 embed = discord.Embed(title="Now Playing", description=f"**{song['title']}**", color=discord.Color.blue())
@@ -223,22 +233,22 @@ class Player(commands.Cog):
         except Exception as e:
             embed = discord.Embed(
                 title="Playback Error",
-                description=f"An error occurred during playback",
+                description="An error occurred during playback.",
                 color=discord.Color.red()
             )
             await ctx.send(embed=embed)
             logger.error(f"Error during playback: {e}", exc_info=True)
     
     @commands.hybrid_command(name="help", with_app_command=True)
-    async def help_command(self, ctx,*, command: str = None):
+    async def help_command(self, ctx, *, command: str = None):
         """Displays the help message with available commands or detailed info for a specific command."""
         embed = discord.Embed(title="Help", color=discord.Color.blue())
 
         if command is None:
             embed.add_field(name="Songs Players", value=(
                 "`play` - Plays song from the given song query.\n"
-                "`playnow` - Stops current playback, clears the queue, and immediately plays... \n"
-                "`sourceplay` - Plays audio from the given URL or query. ...\n"
+                "`playnow` - Stops current playback, clears the queue, and immediately plays...\n"
+                "`sourceplay` - Plays audio from the given URL or query...\n"
                 "`playlist` - Accepts a YouTube playlist URL and fetches the songs then starts playing it.\n"
             ), inline=False)
 
@@ -248,7 +258,7 @@ class Player(commands.Cog):
                 "`skip` - Skips the currently playing song and plays the next song in the queue.\n"
                 "`stop` - Stops the current song and clears the queue.\n"
                 "`disconnect` - Disconnects the bot from the voice channel.\n"
-                "`queue` - Gives you list of upcomming songs.\n"
+                "`queue` - Gives you list of upcoming songs.\n"
                 "`repeat` - Toggles repeat mode."
             ), inline=False)
 
@@ -265,14 +275,14 @@ class Player(commands.Cog):
                 'play': "`play` - Plays song from the given song query. This command starts playing the song that matches the given query.",
                 'playnow': "`playnow` - Stops current playback, clears the queue, and immediately plays the specified song. This command is useful if you want to clear the queue and play a new song immediately.",
                 'sourceplay': "`sourceplay` - Plays media from the given URL or query. For a list of supported URLs, use `sitelist`. This command is used to play media from a specified URL or query.",
-                'playlist': "`playlist` - Accepts a YouTube playlist URL and fetches the entire playlist, then starts playing it. This command is used to queue up and play all the songs from a specified YouTube playlist.",
+                'playlist': "`playlist` - Accepts a YouTube playlist URL and fetches the entire playlist, then starts playing it. This command is used to queue up and play all the songs from a specified YouTube playlist. \n NOTE: The playlist should not have any unavailable songs listed.",
                 'pause': "`pause` - Pauses the current song. Use this command if you want to temporarily stop the playback of the current song.",
                 'resume': "`resume` - Resumes the current song. Use this command to continue playback if a song was previously paused.",
                 'skip': "`skip` - Skips the currently playing song and plays the next song in the queue. This command is used to skip the current song and proceed to the next one.",
                 'stop': "`stop` - Stops the current song and clears the queue. Use this command to stop the playback and remove all songs from the queue.",
                 'disconnect': "`disconnect` - Disconnects the bot from the voice channel. Use this command when you want to stop the bot from playing music and disconnect it from the voice channel.",
-                'queue':" queue Gives you list of all upcomming songs from the queue with their indexes you can use `skip` command to jump to the corrosponding index of the song",
-                'repeat':"Toggles repeat mode for current playing media.",
+                'queue': "`queue` - Gives you a list of all upcoming songs from the queue with their indexes. You can use the `skip` command to jump to the corresponding index of the song.",
+                'repeat': "`repeat` - Toggles repeat mode for the current playing media.",
                 'sitelist': "`sitelist` - Lists the websites from which you can play audio. This command provides a list of supported websites for audio playback.",
                 'help': "`help` - Shows this help message. Use this command to get information about all available commands."
             }
@@ -286,11 +296,9 @@ class Player(commands.Cog):
         """Play a song from a search query."""
         try:
             if query is None:
-                # if self.Queue.is_empty() is False:
-                    
                 embed = discord.Embed(
                     title="Error",
-                    description=f"A required argument is missing: `query`.",
+                    description="A required argument is missing: `query`.",
                     color=discord.Color.red()
                 )
                 await ctx.send(embed=embed)
@@ -335,7 +343,7 @@ class Player(commands.Cog):
         except Exception as e:
             embed = discord.Embed(
                 title="Error",
-                description=f"An error occurred while processing your request",
+                description="An error occurred while processing your request.",
                 color=discord.Color.red()
             )
             await ctx.send(embed=embed)
@@ -348,7 +356,7 @@ class Player(commands.Cog):
             if query is None:
                 embed = discord.Embed(
                     title="Error",
-                    description=f"A required argument is missing: query.",
+                    description="A required argument is missing: `query`.",
                     color=discord.Color.red()
                 )
                 await ctx.send(embed=embed)
@@ -393,7 +401,7 @@ class Player(commands.Cog):
         except Exception as e:
             embed = discord.Embed(
                 title="Error",
-                description=f"An error occurred while processing your request",
+                description="An error occurred while processing your request.",
                 color=discord.Color.red()
             )
             await ctx.send(embed=embed)
@@ -406,7 +414,7 @@ class Player(commands.Cog):
             if playlist_url is None:
                 embed = discord.Embed(
                     title="Error",
-                    description=f"A required argument is missing: playlist_url.",
+                    description="A required argument is missing: `playlist_url`.",
                     color=discord.Color.red()
                 )
                 await ctx.send(embed=embed)
@@ -425,8 +433,6 @@ class Player(commands.Cog):
             )
             await ctx.send(embed=processing_embed)
             
-            # songs = await fetch_playlist(playlist_url)
-            # songs = await asyncio.create_task(fetch_playlist(playlist_url))
             songs = await self.bot.loop.run_in_executor(None, fetch_playlist, playlist_url)
             if len(songs): 
                 
@@ -434,11 +440,11 @@ class Player(commands.Cog):
                 
                 embed = discord.Embed(
                     title="Added to Queue",
-                    description=f"Your Playlist has been added to the queue.",
+                    description="Your Playlist has been added to the queue.",
                     color=discord.Color.orange()
                 )
                 await ctx.send(embed=embed)
-                logger.info(f"Added Playlist to queue")
+                logger.info("Added Playlist to queue")
                 
                 if not ctx.voice_client.is_playing() and not ctx.voice_client.is_paused():
                     await self.play_song(ctx)
@@ -453,7 +459,7 @@ class Player(commands.Cog):
         except Exception as e:
             embed = discord.Embed(
                 title="Error",
-                description=f"An error occurred while processing your request",
+                description="An error occurred while processing your request.",
                 color=discord.Color.red()
             )
             await ctx.send(embed=embed)
@@ -469,7 +475,7 @@ class Player(commands.Cog):
         except Exception as e:
             embed = discord.Embed(
                 title="Error",
-                description=f"An error occurred while processing your request",
+                description="An error occurred while processing your request.",
                 color=discord.Color.red()
             )
             await ctx.send(embed=embed)
@@ -703,6 +709,18 @@ class Player(commands.Cog):
             await ctx.send(embed=embed)
             logger.error(f"Something went wrong for volume command : {volume}")
     
+    @commands.hybrid_command(name="sitelist", with_app_command=True)
+    async def sitelist(self, ctx):
+        """Display the list of supported websites for audio playback."""
+        embed = discord.Embed(
+            title="Supported Websites",
+            description="The bot supports playback from the following websites:\n"
+                        "- YouTube\n"
+                        "- more comming soon...\n",
+            color=discord.Color.blue()
+        )
+        await ctx.send(embed=embed)
+    
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         """Handles voice state updates, including when a member leaves the voice channel."""
@@ -724,4 +742,28 @@ class Player(commands.Cog):
                     message = await self.current_ctx.channel.send(embed=embed)
                     tempctx = await self.bot.get_context(message)
                     # Disconnect the bot from the voice channel
-                    await self.disconnect(tempctx)      
+                    await self.disconnect(tempctx)
+                    
+    # this is the test command to check if the user is premium or not will be removed later
+    @commands.hybrid_command(name="test", with_app_command=True)
+    async def test(self, ctx):
+        
+        author_id = ctx.author.id
+        print(author_id)
+        if(self.dbObj.is_user_premium(author_id)):
+            embed = discord.Embed(
+                title="Premium user",
+                description="Ahh.. premium user.",
+                color=discord.Color.green()
+            )
+            await ctx.send(embed=embed)
+            return
+        else:
+            embed = discord.Embed(
+                title="Not Premium",
+                description="Chiiiii tatiiii user.",
+                color=discord.Color.red()
+            )
+            await ctx.send(embed=embed)
+            return
+        

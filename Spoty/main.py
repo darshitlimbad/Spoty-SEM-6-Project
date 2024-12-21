@@ -1,24 +1,15 @@
-# import discord
-# from discord.ext import commands
-
-from Modules.DB.database import MySQLConnection
 from Modules.Bot.init import *
-from Modules.utils import * 
-    
+from Modules.utils import *
 from Modules.logger import logger
-from Modules.PrintLicence import print_license
+from Modules.PrintLicense import print_license
 
 def main():
-    # Prints LICENCE
+    # Prints LICENSE
     print_license()
     
-    # Mysql Connection
-    db = MySQLConnection()
-    conn = db.get_connection()
-    
-    # Discord bot
+    # Initialize and run the Discord bot
     bot = Spoty_bot()
-    bot.run(discord_token)
+    bot.run()
 
 if __name__ == '__main__':
     main()
