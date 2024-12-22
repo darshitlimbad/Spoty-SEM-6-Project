@@ -66,13 +66,13 @@ if (isset($_COOKIE['refresh_token'])) {
 } else {
     // No refresh token in cookies, initiate OAuth flow
 
-    // Step 1: OAuth Code Flow if no valid refresh token
+    // OAuth Code Flow if no valid refresh token
     if (!isset($_GET['code'])) {
         header("Location: $discordAuthUrl");
-        exit;  // Ensure no further code execution
+        exit; 
     }
 
-    // Step 2: Exchange Code for Access Token
+    // Exchange Code for Access Token
     $code = $_GET['code'];
     $ch = curl_init($tokenUrl);
     curl_setopt_array($ch, [
