@@ -1,4 +1,5 @@
 import yt_dlp
+import discord
 from Modules.logger import logger
 
 class Queue:
@@ -133,11 +134,6 @@ def fetch_playlist(playlist_url: str):
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(playlist_url, download=False)
-
-            # Save the playlist metadata to a JSON file
-            import json
-            with open('playlist.json', 'w') as f:
-                json.dump(info, f, indent=4)
                 
             playlist_songs = []
             if 'entries' in info:

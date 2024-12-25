@@ -93,11 +93,11 @@ class Player(commands.Cog):
         self.auto_play = False          # Should auto play or not 
         self.song_repeat = False        # Repeat the song or not
         
-        self.dbObj= database.MySQLConnection() # Database object
-        if self.dbObj.is_connected():
-            logger.info("Database connection established.")
-        else:
-            logger.error("Database connection failed.")
+        # self.dbObj= database.MySQLConnection() # Database object
+        # if self.dbObj.is_connected():
+        #     logger.info("Database connection established.")
+        # else:
+        #     logger.error("Database connection failed.")
         
     async def is_bot_connected_to_voice(self, ctx) -> bool:
         """Check if the bot is connected to a voice channel."""
@@ -626,7 +626,7 @@ class Player(commands.Cog):
                     embed = discord.Embed(
                         title="Queue Empty",
                         description="There are no songs in the queue.",
-                        color=discord.Color.red()
+                        color= discord.Color.red()
                     )
                     await ctx.send(embed=embed)
                     return

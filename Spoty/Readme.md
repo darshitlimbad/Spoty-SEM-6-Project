@@ -1,4 +1,4 @@
-# Spoty Discord Music companion
+# Spoty Discord Bot
 
 Welcome to Spoty, your ultimate Discord music companion! Spoty offers seamless audio streaming and management within your Discord server. Below is a guide to using the bot and its commands.
 
@@ -39,15 +39,23 @@ Welcome to Spoty, your ultimate Discord music companion! Spoty offers seamless a
 
 3. **Configure Your Bot:**
 
-    - rename the `config.json.example` to `config.json` in the root directory and update the fields.
-    - **Note**: `ADMINID` is optional. If you don't want to provide an admin ID, you can use any number like `1232`.
+    Create a `config.json` file in the root directory with the following structure:
+
+    ```json
+    {
+        "TOKEN": "YOUR_DISCORD_BOT_TOKEN",
+        "PREFIX": "!",
+        "ADMINID": "YOUR_DISCORD_ADMIN_ID"  
+    }
+    ``` 
+    Note: `ADMINID` is optional. If you don't want to provide an admin ID, you can use any number like `1232`.
 
 4. **Run the Bot:**
 
    Execute the bot script:
 
    ```bash
-   python3 main.py
+   python main.py
    ``` 
 
 ## Development
@@ -81,5 +89,5 @@ Spoty - Discord Music Companion Built using Python and YT_dlp
 ## Contact
 
 For further information or support, please reach out at:
-- **Email:** darshitlimbad+git@gmail.com
+- **Email:** darshitlimbad+git@example.com
 - **LinkedIn:** [Darshit Limbad](https://www.linkedin.com/in/darshit-limbad/)
