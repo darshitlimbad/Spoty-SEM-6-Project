@@ -14,6 +14,8 @@ discord_token = config["discord"].get("TOKEN", None)
 adminID = config["discord"].get("ADMINID", None)
 prefix = config["discord"].get("PREFIX", '!')
 
+websiteInfo= config['website']
+
 if not discord_token:
     logger.error("DISCORD TOKEN IS MISSING")
     exit()
@@ -93,11 +95,11 @@ class Player(commands.Cog):
         self.auto_play = False          # Should auto play or not 
         self.song_repeat = False        # Repeat the song or not
         
-        # self.dbObj= database.MySQLConnection() # Database object
-        # if self.dbObj.is_connected():
-        #     logger.info("Database connection established.")
-        # else:
-        #     logger.error("Database connection failed.")
+        self.dbObj= database.MySQLConnection() # Database object
+        if self.dbObj.is_connected():
+            logger.info("Database connection established.")
+        else:
+            logger.error("Database connection failed.")
         
     async def is_bot_connected_to_voice(self, ctx) -> bool:
         """Check if the bot is connected to a voice channel."""
@@ -352,7 +354,7 @@ class Player(commands.Cog):
     @commands.hybrid_command(name="sourceplay", with_app_command=True)
     async def sourceplay(self, ctx, *, query=None):
         """Play any media from a YouTube URL or query."""
-        try:
+        try:            
             if query is None:
                 embed = discord.Embed(
                     title="Error",
@@ -411,6 +413,15 @@ class Player(commands.Cog):
     async def playlist(self, ctx, *, playlist_url=None):
         """Play any playlist from a YouTube playlist URL."""
         try:
+            if not self.dbObj.is_user_premium(ctx.author.id):
+                embed = discord.Embed(
+                    title="Premium Feature",
+                    description=f"This feature is only available for premium users. To use this feature, please purchase a premium membership from the following link: [Premium Membership]({websiteInfo.get('PREMIUM_URL','URL-MISSING')}).",
+                    color=discord.Color.gold()
+                )
+                await ctx.send(embed=embed)
+                return
+            
             if playlist_url is None:
                 embed = discord.Embed(
                     title="Error",
@@ -468,6 +479,14 @@ class Player(commands.Cog):
     @commands.hybrid_command(name="playnow", with_app_command=True)
     async def playnow(self, ctx, *, query=None):
         try:
+            if not self.dbObj.is_user_premium(ctx.author.id):
+                embed = discord.Embed(
+                    title="Premium Feature",
+                    description=f"This feature is only available for premium users. To use this feature, please purchase a premium membership from the following link: [Premium Membership]({websiteInfo.get('PREMIUM_URL','URL-MISSING')}).",
+                    color=discord.Color.gold()
+                )
+                await ctx.send(embed=embed)
+                return
             
             await self.stop(ctx)
             await self.play(ctx,query=query)
@@ -484,6 +503,16 @@ class Player(commands.Cog):
     @commands.hybrid_command(name="repeat", with_app_command=True)
     async def repeat(self,ctx):
         """Toggles repeat mode."""
+        
+        if not self.dbObj.is_user_premium(ctx.author.id):
+            embed = discord.Embed(
+                title="Premium Feature",
+                description=f"This feature is only available for premium users. To use this feature, please purchase a premium membership from the following link: [Premium Membership]({websiteInfo.get('PREMIUM_URL','URL-MISSING')}).",
+                color=discord.Color.gold()
+            )
+            await ctx.send(embed=embed)
+            return
+        
         if self.song_repeat is False :
             self.song_repeat=True
             embed = discord.Embed(
@@ -646,6 +675,15 @@ class Player(commands.Cog):
     async def volume(self, ctx, volume = None):
         """Set the volume level or return the current volume if no value is provided."""
         try:
+            if not self.dbObj.is_user_premium(ctx.author.id):
+                embed = discord.Embed(
+                    title="Premium Feature",
+                    description=f"This feature is only available for premium users. To use this feature, please purchase a premium membership from the following link: [Premium Membership]({websiteInfo.get('PREMIUM_URL','URL-MISSING')}).",
+                    color=discord.Color.gold()
+                )
+                await ctx.send(embed=embed)
+                return
+            
             if True:
                 if not await self.is_bot_connected_to_voice(ctx):
                     embed = discord.Embed(
@@ -743,27 +781,3 @@ class Player(commands.Cog):
                     tempctx = await self.bot.get_context(message)
                     # Disconnect the bot from the voice channel
                     await self.disconnect(tempctx)
-                    
-    # this is the test command to check if the user is premium or not will be removed later
-    @commands.hybrid_command(name="test", with_app_command=True)
-    async def test(self, ctx):
-        
-        author_id = ctx.author.id
-        print(author_id)
-        if(self.dbObj.is_user_premium(author_id)):
-            embed = discord.Embed(
-                title="Premium user",
-                description="Ahh.. premium user.",
-                color=discord.Color.green()
-            )
-            await ctx.send(embed=embed)
-            return
-        else:
-            embed = discord.Embed(
-                title="Not Premium",
-                description="Chiiiii tatiiii user.",
-                color=discord.Color.red()
-            )
-            await ctx.send(embed=embed)
-            return
-        

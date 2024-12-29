@@ -11,4 +11,10 @@
         "password": "Your Password",
         "dbname": "Your database name"
     }
+
+    "website":{
+      "Name": "Example",
+      "URL": "https://example.com/",
+      "PREMIUM_URL": "https://example.com/premium"
+    }
 }

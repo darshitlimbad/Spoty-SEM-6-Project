@@ -36,8 +36,11 @@ class MySQLConnection:
 
             # Check if the database exists and create it if not
             cursor.execute(f"CREATE DATABASE IF NOT EXISTS `{db_name}`")
+            conn.commit()
             logger.info(f"Database `{db_name}` checked/created successfully.")
             cursor.execute(f"USE `{db_name}`")
+            conn.commit()
+            
 
             # Create the "users" table if it doesn't exist
             table_query = """
@@ -54,6 +57,7 @@ class MySQLConnection:
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
             """
             cursor.execute(table_query)
+            conn.commit()
             logger.info("Table `users` checked/created successfully.")
             print("-" * 100)
 
@@ -93,6 +97,7 @@ class MySQLConnection:
         cursor = self.conn.cursor()
         cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
         result = cursor.fetchone()
+        self.conn.commit()
         cursor.close()
         return result is not None
     
@@ -103,6 +108,7 @@ class MySQLConnection:
         cursor = self.conn.cursor()
         cursor.execute(f"SELECT * FROM users WHERE id = {user_id} AND premium = 1")
         result = cursor.fetchone()
+        self.conn.commit()
         cursor.close()
         print(result)
         return result is not None
