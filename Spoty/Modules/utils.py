@@ -159,27 +159,40 @@ def fetch_playlist(playlist_url: str):
         return []
 
 def format_queue(queue):
-    """Format the song queue for display in an embed.
+    """Format the song queue for display in embeds.
 
     Args:
         queue (list): A list of dictionaries where each dictionary represents a song with a 'title' key.
 
     Returns:
-        discord.Embed: An embed containing the formatted song queue.
+        list: A list of discord.Embed objects containing the formatted song queue.
     """
+    embeds = []
     embed = discord.Embed(title="Current Queue", color=discord.Color.blue())
     
-    header="Index\t Song"
+    header = "Index\t Song"
     entries = [header]
-    
+    total_length = len(header) + 4  # Initial length with some buffer
+
     for i, song in enumerate(queue, start=1):
         title = song.get('title', "N/A")
         short_title = ' '.join(title.split()[:4])
         entry = f"#{i:<5} {short_title:<20}"
+        entry_length = len(entry) + 1  # +1 for the newline character
+
+        if total_length + entry_length > 4096:
+            embed.description = f"```\n{'\n'.join(entries)}\n```"
+            embeds.append(embed)
+            embed = discord.Embed(title="Current Queue (cont.)", color=discord.Color.blue())
+            entries = [header]
+            total_length = len(header) + 4
+
         entries.append(entry)
+        total_length += entry_length
 
-    formatted_queue = "\n".join(entries)
+    if entries:
+        embed.description = f"```\n{'\n'.join(entries)}\n```"
+        embeds.append(embed)
 
-    embed.description = f"```\n{formatted_queue}\n```"
-    
-    return embed
+    return embeds
+
