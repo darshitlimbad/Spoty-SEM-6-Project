@@ -583,10 +583,12 @@ class Player(commands.Cog):
                     index = int(index) - 1
                     self.Queue.shuffle_index(index, 0)
 
-                # Stop the current song to skip to the next 
-                ctx.voice_client.stop() # after= will call self.play_song() automatically
+                
                 embed_skip = discord.Embed(title="Song Skipped", color=discord.Color.orange())
                 await ctx.send(embed=embed_skip)
+                
+                # Stop the current song to skip to the next 
+                ctx.voice_client.stop() # after= will call self.play_song() automatically
                 logger.info("Song skipped.")
                 
             else:

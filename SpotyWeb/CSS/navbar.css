@@ -1,0 +1,106 @@
+/* Navbar styles */
+header{
+    background-color: rgba(0, 0, 0, 0.1); /* Semi-transparent background */
+    -webkit-backdrop-filter: blur(5px); /* Apply a blur effect to the background */
+    backdrop-filter: blur(5px); /* Apply a blur effect to the background */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    width: 90%;
+}
+
+.navbar-logo a {
+    font-size: 2rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: #e0e0e0;
+    transition: color 0.3s ease; /* Added hover animation */
+}
+  
+.navbar-logo a:hover {
+     color: #fff;
+}
+  
+.navbar-links {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 2rem;
+}
+  
+.navbar-links li {
+    list-style: none;
+}
+  
+.navbar-links a {
+    text-decoration: none;
+    color: #e0e0e0;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 0.3rem; /* Rounded corners */
+    
+}
+  
+.navbar-links a:hover {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1); /* Slightly darker background on hover */
+}
+
+/* Styles for toggle (hamburger menu) */
+.navbar-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 5px;
+}
+
+.navbar-toggle .bar {
+    width: 30px;
+    height: 3px;
+    background-color: #e0e0e0;
+    transition: transform 0.3s ease;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .navbar-links {
+        display: none; /* Hide nav links on smaller screens */
+        flex-direction: column;
+        position: absolute;
+        top: 100%; /* place menu right below navbar*/
+        left: 0;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.8); /* Darker background for mobile menu */
+        -webkit-backdrop-filter: blur(5px);
+        backdrop-filter: blur(5px);
+        padding: 20px 0;
+    }
+    .navbar-links.active{
+        display: flex;
+    }
+     .navbar-links li {
+        padding: 0.5rem 0;
+        text-align: center;
+    }
+    .navbar-toggle {
+        display: flex;
+    }
+    .navbar-toggle.active .bar:nth-child(1){
+      transform: translateY(8px) rotate(45deg);
+    }
+      .navbar-toggle.active .bar:nth-child(2){
+         opacity:0
+      }
+     .navbar-toggle.active .bar:nth-child(3){
+      transform: translateY(-8px) rotate(-45deg);
+    }
+}

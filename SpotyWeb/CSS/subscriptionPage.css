@@ -1,0 +1,116 @@
+/* subscriptionPage.css */
+#subscription-page {
+    background-color: #121212;
+}
+.subscription-content {
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+    width: 90%;
+     max-width: 1000px;
+    margin: 0 auto;
+}
+
+.subscription-content .section-title {
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.plans-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.plan-card {
+    background-color: #1e1e1e;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+    text-align: left; /* Align content to the left for better readability */
+    width: 300px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.plan-card.premium {
+    background-image: linear-gradient(145deg, #FFC0CB, #FF69B4);
+    color: white;
+}
+
+.plan-card h3 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.plan-card ul {
+    list-style: none;
+    padding-left: 20px;
+    margin-bottom: 30px;
+}
+
+.plan-card ul li {
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+    line-height: 1.5;
+      position: relative; /* Add relative positioning */
+}
+.plan-card ul li::before{
+      content: "✓"; /* Add checkmark character */
+    position: absolute; /* Position checkmark absolutely */
+    left: -20px; /* Adjust position as needed */
+    color: #4caf50; /* Checkmark color */
+    font-size: 1.3em; /* size of the checkmark*/
+}
+
+.plan-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+     font-weight: bold;
+    
+}
+
+.btn:disabled{
+     background: gray;
+     pointer-events: none;
+}
+.btn-free{
+    background: #4caf50;
+    color: white;
+}
+.btn-premium {
+     background: white;
+    color: black;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .plans-container {
+        flex-direction: column; /* Stack plan cards on smaller screens */
+        align-items: center; /* Center plan cards horizontally */
+    }
+
+    .plan-card {
+        width: 90%;
+        max-width: 400px; /* Set max-width for smaller devices*/
+    }
+}

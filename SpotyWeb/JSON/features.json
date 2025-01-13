@@ -1,0 +1,56 @@
+{
+  "features": [
+    {
+      "title": "Seamless Voice Channel Integration",
+      "description": "Easily connect the bot to your Discord voice channel with a simple command to start playing music."
+    },
+     {
+      "title": "Versatile Music Playback",
+      "description": "Play music by searching for song titles, artists, or directly from YouTube URLs, Soundcloud or Spotify links."
+    },
+     {
+      "title": "Queue Management",
+      "description": "Add songs to a queue, view the current queue, rearrange the playlist, and skip to any song."
+    },
+    {
+      "title": "Playlist Support",
+        "description": "Queue and play songs from YouTube playlists seamlessly with a single command (Premium Feature)."
+    },
+    {
+      "title": "Playback Controls",
+      "description": "Control your music with easy-to-use commands directly in Discord, including play, pause, skip, and stop."
+    },
+    {
+        "title": "Premium Play Now Feature",
+        "description": "Stop current playback and queue the next requested song immediately by using `playnow` command (Premium Feature)."
+    },
+      {
+        "title":"High Quality Audio",
+       "description": "Enjoy crystal-clear music streaming directly to your Discord server with no compromise in quality (Premium Feature)."
+    },
+     {
+      "title": "Repeat Functionality",
+        "description":"Repeat the currently playing song in loop (Premium Feature)."
+    },
+     {
+        "title": "Volume Control",
+        "description":"Control the volume level of the music playback (Premium Feature)."
+    },
+    {
+      "title": "24/7 Uptime",
+      "description": "Spoty bot ensures the bot is always online to play your favorite music."
+    },
+     {
+        "title": "Cross-Platform Compatibility",
+        "description": "Spoty is compatible with various platforms including YouTube, Spotify, SoundCloud etc."
+    },
+     {
+      "title": "User-Friendly Interface",
+      "description": "The bot has an intuitive and easy-to-understand interface for all users."
+     },
+      {
+      "title": "Auto-Disconnection",
+        "description":"The bot disconnects from the voice channel when it becomes the only member in the channel."
+    }
+  ]
+}

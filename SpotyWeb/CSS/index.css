@@ -1,75 +1,235 @@
-body {
-  font-family: Arial, sans-serif;
-  height: 100vh;
-  margin: 0;
-  display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: flex-start; /* Align at the top */
-  background-color: #121212;
-  overflow: hidden;
-  color: white;
-  position: relative;
+body, html {
+    font-family: Arial, sans-serif;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background-color: #121212;
+    color: white;
 }
 
-.background-video video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -1;
+ /* Features Section */
+#features {
+    background-color: #121212;
 }
 
+.scroll-container {
+    height: 100vh;
+    overflow-y: scroll;
+    /* scroll-snap-type: y mandatory; */
+    /* scroll-behavior: smooth; */
+}
+  
+.page {
+    height: 100vh;
+    width: 100%;
+    scroll-snap-align: start;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+/* Home Page Section */
+#home {
+    position: relative;
+}
+  
+/* .background-video video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+   */
+.home-content {
+    text-align: center;
+    z-index: 1;
+    padding: 0 20px;
+}
+  
+.home-content h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: #fff;
+}
+  
+.home-content p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    color: #e0e0e0;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+  
 /* Discord Button */
-button {
-  margin-top: 40px; /* Add spacing from the very top */
-  max-width: 320px;
-  display: flex;
-  overflow: hidden;
-  position: relative;
-  padding: 0.875rem 72px 0.875rem 1.75rem;
-  background-color: #ffd3f8; /* Pastel pink */
-  background-image: linear-gradient(to top right, #f0dfff, #b8e0e3); /* Gradient */
-  color: #3a3a3a;
-  font-size: 15px;
-  line-height: 1.25rem;
-  font-weight: 700;
-  text-align: center;
-  text-transform: uppercase;
-  align-items: center;
-  border-radius: 0.5rem;
-  gap: 0.75rem;
-  border: none;
-  transition: all 0.6s ease; /* Smooth animation */
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-
-  /* Prevent Selection */
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-   -khtml-user-select: none; /* Konqueror HTML */
-     -moz-user-select: none; /* Old versions of Firefox */
-      -ms-user-select: none; /* Internet Explorer/Edge */
-          user-select: none; /* Non-prefixed version, currently
-                                supported by Chrome, Edge, Opera and Firefox */
+.button-container {
+    display: flex;
+    justify-content: center;
+}
+   
+.features-section {
+    color: #fff;
+    padding: 40px 20px;
+    text-align: center;
+}
+  
+.features-section .section-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    text-align: center;
+    margin-bottom: 40px; /* Added a margin to maintain the previous style*/
 }
 
-button span {
-  background-color: #b8e0e3;
-  display: grid;
-  position: absolute;
-  right: 0;
-  place-items: center;
-  width: 3rem;
-  height: 100%;
+.features-section .section-title .title-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-right: 0.75rem;
+    fill: #5865F2;
+    animation: iconBounce 1.5s ease-in-out infinite;
+}
+    
+@keyframes iconBounce {
+        0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+        }
+        40% {
+        transform: translateY(-10px);
+        }
+        60% {
+        transform: translateY(-5px);
+        }
+}
+.features-section .section-title .title-text {
+        margin: 0;
+}
+  
+.features-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+  
+.feature-box {
+    background-color: #1e1e1e;
+    padding: 30px;
+    width: 250px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+  
+.feature-box h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+  
+.feature-box p {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+  
+.feature-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
 }
 
-button span svg {
-  width: 1.5rem;
-  height: 1.5rem;
+/* Common container style */
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
-button:hover {
-  box-shadow: 0 0 30px 10px rgba(255, 192, 203, 0.8), 
-              0 0 20px 8px rgba(240, 223, 255, 0.6);
+/* Base button style */
+.btn {
+    display: flex;
+    align-items: center;
+    position: relative;
+    max-width: 320px;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.25rem;
+    text-align: center;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Discord button specific styles */
+.btn-discord {
+    padding: 0.875rem 72px 0.875rem 1.75rem;
+    background-image: linear-gradient(to top right, #f0dfff, #b8e0e3);
+    color: #3a3a3a;
+    text-transform: uppercase;
+    border-radius: 0.5rem;
+    gap: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+               0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.btn-discord:hover {
+    box-shadow: 0 0 30px 10px rgba(255, 192, 203, 0.8), 
+               0 0 20px 8px rgba(240, 223, 255, 0.6);
+}
+
+.btn-discord .icon-container {
+    background-color: #b8e0e3;
+    display: grid;
+    position: absolute;
+    right: 0;
+    place-items: center;
+    width: 3rem;
+    height: 100%;
+}
+
+.btn-discord .icon {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+/* OnlyFans button specific styles */
+.btn-onlyfans {
+    padding: 12px 24px;
+    background: linear-gradient(145deg, #FFC0CB, #FF69B4);
+    border-radius: 50px;
+    color: white;
+    gap: 8px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.15), 
+               -5px -5px 10px rgba(255, 255, 255, 0.5);
+}
+
+.btn-onlyfans:hover {
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3), 
+               -5px -5px 15px rgba(255, 255, 255, 0.7);
+    transform: scale(1.05);
+}
+
+.btn-onlyfans:active {
+    box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.15), 
+               inset -5px -5px 10px rgba(255, 255, 255, 0.5);
+    transform: scale(0.98);
+}
+
+.btn-onlyfans .icon {
+    width: 40px;
+    height: 24px;
+    fill: white;
+    pointer-events: none;
+    -webkit-user-drag: none;
 }

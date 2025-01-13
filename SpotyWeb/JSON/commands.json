@@ -1,0 +1,100 @@
+{
+    "commandCategories": [
+        {
+            "name": "Songs Players",
+            "commands": [
+                {
+                    "name": "play",
+                    "description": "Play a song from a search query.",
+                    "premium": false
+                },
+                {
+                    "name": "playnow",
+                    "description": "Stops current playback, clears the queue, and immediately plays the specified song.",
+                    "premium": true
+                },
+                {
+                    "name": "sourceplay",
+                    "description": "Play any media from a YouTube URL or query.",
+                    "premium": false
+                },
+                {
+                    "name": "playlist",
+                    "description": "Play any playlist from a YouTube playlist URL.",
+                    "premium": true
+                }
+            ]
+        },
+        {
+            "name": "Playback Control",
+            "commands": [
+                {
+                    "name": "pause",
+                    "description": "Pause the currently playing song.",
+                    "premium": false
+                },
+                 {
+                    "name": "resume",
+                    "description": "Resume the paused song.",
+                    "premium": false
+                },
+                {
+                    "name": "skip",
+                    "description": "skip the current song and play the next one.",
+                    "premium": false
+                },
+                {
+                     "name": "stop",
+                     "description":"Stop the playback and clear the queue.",
+                    "premium": false
+                },
+                {
+                    "name": "disconnect",
+                    "description": "Disconnect the bot from the voice channel.",
+                    "premium": false
+                },
+                   {
+                    "name": "queue",
+                     "description": "Display the current song queue.",
+                     "premium": false
+                 },
+                   {
+                     "name": "repeat",
+                     "description": "Toggles repeat mode.",
+                      "premium": true
+                   }
+
+            ]
+        },
+          {
+            "name": "Sources",
+            "commands": [
+                {
+                     "name": "sitelist",
+                    "description": "Lists the websites from which you can play audio.",
+                    "premium": false
+                }
+            ]
+        },
+           {
+            "name": "No Category",
+              "commands": [
+               {
+                    "name": "help",
+                     "description": "Displays the help message with available commands or detailed info for a specific command.",
+                    "premium": false
+                },
+                {
+                    "name": "join",
+                    "description": "Connect the bot to the user's voice channel.",
+                    "premium": false
+                },
+               {
+                 "name": "volume",
+                 "description": "Set the volume level or return the current volume if no value is provided.",
+                 "premium": true
+                }
+            ]
+        }
+    ]
+}
