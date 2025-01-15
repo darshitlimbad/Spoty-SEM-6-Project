@@ -71,7 +71,7 @@
             "commands": [
                 {
                      "name": "sitelist",
-                    "description": "Lists the websites from which you can play audio.",
+                    "description": "Lists the websites from which you can play audio. Currently only from YouTube.",
                     "premium": false
                 }
             ]

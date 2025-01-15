@@ -9,25 +9,9 @@
     <link rel="stylesheet" href="../CSS/navbar.css">
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-          <div class="navbar-logo">
-              <a href="/">Spoty</a>
-          </div>
-          <ul class="navbar-links">
-            <li><a href="/" class="nav-link">Home</a></li>
-            <li><a href="/#features" class="nav-link">Features</a></li>
-              <li><a href="/commands" class="nav-link">Commands</a></li>
-            <li><a href="/subscription" class="nav-link">Subscription</a></li>
-           <!-- Add more links here if necessary-->
-          </ul>
-            <div class="navbar-toggle">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-          </div>
-        </nav>
-    </header>
+    <?php
+        include_once("../navBar/index.php");
+    ?>
     <div class="scroll-container">
         <section id="command" class="page">
             <div class="subscription-content">
@@ -50,5 +34,7 @@
         </section>
     </div>
     <script src="../Scripts/commands.js"></script>
+    <script src="../Scripts/navbar.js"></script>
+
 </body>
 </html>

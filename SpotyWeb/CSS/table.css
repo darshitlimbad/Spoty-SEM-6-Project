@@ -7,6 +7,7 @@
 /* General table styles */
 .table-container {
     width: 90%;
+    padding: 0px 0 50px 0;
     max-width: 1000px; /* Adjust max-width as needed */
     margin: 0 auto;
     overflow-x: auto;

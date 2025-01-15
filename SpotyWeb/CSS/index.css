@@ -2,7 +2,7 @@ body, html {
     font-family: Arial, sans-serif;
     height: 100%;
     margin: 0;
-    overflow: hidden;
+    /* overflow: hidden; */
     background-color: #121212;
     color: white;
 }
@@ -12,12 +12,6 @@ body, html {
     background-color: #121212;
 }
 
-.scroll-container {
-    height: 100vh;
-    overflow-y: scroll;
-    /* scroll-snap-type: y mandatory; */
-    /* scroll-behavior: smooth; */
-}
   
 .page {
     height: 100vh;
@@ -27,6 +21,10 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#features.page{
+    height: auto;
 }
   
 /* Home Page Section */
@@ -145,7 +143,7 @@ body, html {
 /* Common container style */
 .button-container {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
     gap: 1rem;
     flex-wrap: wrap;
@@ -189,7 +187,7 @@ body, html {
 }
 
 .btn-discord .icon-container {
-    background-color: #b8e0e3;
+    /* background-color: #b8e0e3; */
     display: grid;
     position: absolute;
     right: 0;
@@ -232,4 +230,14 @@ body, html {
     fill: white;
     pointer-events: none;
     -webkit-user-drag: none;
+}
+
+@media (max-width: 1150px) {
+    .page{
+        height: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    
 }

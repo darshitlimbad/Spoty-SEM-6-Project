@@ -25,7 +25,7 @@ header{
 }
   
 .navbar-logo a:hover {
-     color: #fff;
+    color: #fff;
 }
   
 .navbar-links {
@@ -70,6 +70,13 @@ header{
     transition: transform 0.3s ease;
 }
 
+.nav-link.logout {
+    background-color: #ff0000;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.3rem;
+}
+
 /* Responsive styles */
 @media (max-width: 768px) {
     .navbar-links {
@@ -87,7 +94,7 @@ header{
     .navbar-links.active{
         display: flex;
     }
-     .navbar-links li {
+    .navbar-links li {
         padding: 0.5rem 0;
         text-align: center;
     }
