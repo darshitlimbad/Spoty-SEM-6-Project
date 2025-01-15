@@ -19,44 +19,6 @@ Welcome to Spoty, your ultimate Discord music companion! Spoty offers seamless a
 - **`sitelist`**: Lists the websites from which you can play audio.
 - **`help`**: Shows this help message.
 
-## Setup
-
-1. **Clone the Repository:**
-
-   ```bash
-   git clone https://github.com/darshitlimbad/Spoty.git
-   ``` 
-
-2. **Install Dependencies:**
-
-   Ensure you have Python 3.8+ installed. Then install the required libraries:
-
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-    Additionally, make sure you have [FFMPEG](https://ffmpeg.org/download.html) downloaded and installed.
-
-3. **Configure Your Bot:**
-
-    Create a `config.json` file in the root directory with the following structure:
-
-    ```json
-    {
-        "TOKEN": "YOUR_DISCORD_BOT_TOKEN",
-        "PREFIX": "!",
-        "ADMINID": "YOUR_DISCORD_ADMIN_ID"  
-    }
-    ``` 
-    Note: `ADMINID` is optional. If you don't want to provide an admin ID, you can use any number like `1232`.
-
-4. **Run the Bot:**
-
-   Execute the bot script:
-
-   ```bash
-   python main.py
-   ``` 
 
 ## Development
 

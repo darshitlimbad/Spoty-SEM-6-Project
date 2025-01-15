@@ -1,107 +1,123 @@
-# Spoty Music Companion for Discord - Project Abstraction
+# Spoty - Your Discord Music Companion
 
-## 1. Project Overview
+![Spoty Logo](SpotyWeb/favicon.ico)  <!-- Replace with your logo path -->
 
-*   **Project Title:** Spoty Music Companion for Discord
-*   **Bot Display Name:** Spoty
-*   **Primary Goal:** To provide a flexible and enhanced music experience within Discord servers. This is achieved by offering:
-    *   **Comprehensive Search:** Supporting a wide range of music, including less popular or region-specific songs.
-    *   **Flexible Input:** Allowing users to play music via song queries, direct URLs, and entire playlist URLs.
-    *   **Seamless Queue Management:** Ensuring easy addition of multiple songs via playlist support.
+<br>
 
-## 2. "spoty" (Backend) Abstraction
+[Spoty Web](http://spoty.ct.ws/)  : http://spoty.ct.ws/
+## Introduction
 
-*   **Core Technologies:** Python 3.8+, `discord.py`, `yt_dlp`, `PyNaCl`, `mysql-connector-python`.
-*   **Functionality:**
-    *   **Discord Interaction:**
-        *   Uses `discord.py` library for all Discord interactions.
-        *   Implements both prefix-based and slash commands.
-        *   Manages voice channel connections (join, disconnect).
-        *   Utilizes `on_voice_state_update` to auto-disconnect if the bot is the only member.
-        *   Uses `is_user_authorized_to_control` for command authorization.
-        *   Uses `asyncio.loop.run_in_executor` for non-blocking operations.
-    *   **Music Playback:**
-        *   Uses `discord.FFmpegPCMAudio` and `PCMVolumeTransformer` for audio playback.
-        *   Supports playing from queries, URLs, and Playlists.
-        *   Has the functionality to repeat song using `song_repeat` variable.
-        *   Has auto-play functionality.
-    *   **Queue Management:**
-        *   Implements a custom `Queue` class using a Python list.
-        *   Provides methods for `put`, `get`, `merge`, `clear`, `shuffle_index`, `is_empty`, and `qsize`.
-    *   **Error Handling:** Manages command and playback errors gracefully using embeds and logging.
-    *   **Configuration:** Reads configuration from `config.json`.
-*   **Data Sources:**
-    *   Uses `yt_dlp` to extract audio from various websites, primarily YouTube for now.
-    *   **`search_song`:** Searches YouTube for a song based on a query.
-    *   **`search_by_query`:** Searches YouTube for a song based on a query or URL.
-    *   **`fetch_playlist`:** Fetches songs from a YouTube playlist. It uses the best audio format and ignores unavailable songs.
-    *   **`format_queue`:** Formats the song queue into a string for display in a Discord embed.
-*   **Database Integration:**
-    *   Uses `mysql-connector-python` to connect to a MySQL database.
-    *   **Connection Management:**
-        *   Initializes a connection based on config file.
-        *   Creates a database and a `users` table if they don't exist.
-        *   Manages connection pooling and closing.
-    *   **User Data:** Stores user data in the `users` table which includes `id`, `username`, `discriminator`, `avatar`, `access_token`, `refresh_token`, `token_expires_at`, `last_login`, and `premium` status.
-    *   **User Operations:**
-        *   Provides functions to check `is_user_registered` and `is_user_premium`.
+Spoty is a Discord music bot designed to elevate your listening experience. It allows you to seamlessly play high-quality audio in your Discord servers, manage your music queue, and enjoy a range of features – with both free and premium options. This repository contains the code for the bot and its companion website.
 
-## 3. "spotyWeb" (Frontend) Abstraction
+## Preview Video
 
-*   **Core Technologies:** HTML, CSS, JavaScript, PHP
-*   **Functionality:**
-    *   **Key Features:**
-        *   **Login Page:** Presents a clean login page with a background video and a "Sign in with Discord" button.
-        *   **User Authentication:** Handles user authentication via Discord's OAuth2 flow.
-        *   **(Future) Feature Showcase:** A section to showcase the music bot's features will be added later.
-         *   **(Future) User Profile Page:** User will be redirected to the user profile page from `PHP/index.php` after a successful login.
-    *   **Discord Login:**
-        *   The login process is initiated by clicking the "Sign in with Discord" button.
-        *   It redirects users to Discord's authorization page.
-        *   After authorization, Discord redirects the user back to `discord_oauth2.php`.
-    *   **User Interaction:** Currently, users only interact with the login button. Further features will be added later.
-    *   **Backend Communication:** The `discord_oauth2.php` script directly interacts with the MySQL database and doesn't communicate with the "spoty" backend (Python bot) directly.
-*   **User Authentication:**
-    *   **OAuth2 Flow:** Implements the full OAuth2 flow (authorization code grant type) for Discord authentication:
-        *   **Authorization Request:** Redirects users to Discord's authorization endpoint (`https://discord.com/api/oauth2/authorize`) with necessary parameters.
-        *   **Token Exchange:** Exchanges the authorization code for an access token and refresh token at Discord's token endpoint (`https://discord.com/api/oauth2/token`).
-        *   **User Data Retrieval:** Uses the access token to fetch user information from Discord's user endpoint (`https://discord.com/api/users/@me`).
-        *   **Token Refresh:** Implements refresh token functionality by storing the refresh token in a cookie, using it to obtain new tokens when the access token expires. If no refresh token is found, the OAuth flow is reinitiated.
-    *   **Database Storage:** Stores user info, access token, and refresh token in the `users` table in MySQL database.
-    *   **Session Management:** Uses PHP sessions to store `user_id` and `username` after successful login.
-    *   **Cookie management:** Sets the refresh token in a cookie named `refresh_token` with a 30-day expiration.
-*   **Presentation:**
-    *   Uses a visually appealing layout with a background video using `index.css`.
-    *   A large, central button for easy login.
-*   **Database Initialization:**
-    *   **`init_database.php`:** Creates a PDO connection to the database using configuration from `PHP/DB/config.json`.
-        *   Creates the database and the `users` table if they don't exist.
-        *   Sets error mode to `PDO::ERRMODE_EXCEPTION`.
+<video width="640" height="360" controls autoplay loop >
+  <source src="SpotyWeb/Media/SpotyHomePageAnimation.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
 
-## 4. Database Details
+## Key Features
 
-*   **Database System:** MySQL
-*   **Database Schema:**
-    *   **`users` Table:**
-        *   `id` (VARCHAR(20), PRIMARY KEY): Discord user ID.
-        *   `username` (VARCHAR(100)): Discord username.
-        *   `discriminator` (VARCHAR(4)): Discord discriminator (e.g., #1234).
-        *   `avatar` (VARCHAR(255)): Discord avatar hash.
-        *   `access_token` (TEXT): OAuth2 access token.
-        *   `refresh_token` (TEXT): OAuth2 refresh token.
-        *   `token_expires_at` (DATETIME): Expiry timestamp for the access token.
-        *   `last_login` (DATETIME): Timestamp of the last login.
-        *    `premium` (TINYINT(1), DEFAULT 0): Premium status.
+*   **High-Quality Audio:** Stream music in crystal-clear quality directly to your Discord server.
+*   **Seamless Playback Controls:** Easy-to-use commands in Discord for play, pause, skip, queue management, and more.
+*   **Queue Management:** Add songs to a queue, view the current queue, and rearrange the playlist.
+*   **24/7 Uptime (Premium):** Enjoy uninterrupted music playback with the premium plan.
+*   **Ad-Free Experience (Premium):** Say goodbye to interruptions with the premium, ad-free option.
+*   **Priority Support (Premium):** Get faster support with a premium membership.
+*   **User-Friendly Interface:** An intuitive and easy-to-understand interface for all users.
+*   **Command Categories:** Commands are categorized for ease of use like: `Song Players`, `Playback Control`, `Sources` etc.
+*   **Subscription Plans:** Clear distinction between free and premium features, allowing users to choose the right plan for them.
 
-## 5. Overall Project Flow
+## Website Features
 
-1.  **User Discovery:** Users find the "Spoty" bot on Discord.
-2.  **Discord Interaction:**
-    *   Users use bot commands via Discord to play music.
-    *   The bot connects to voice channels, plays audio, and manages queues, using the `yt_dlp` library to fetch audio, `discord.py` library to interact with Discord and a custom queue to manage the song requests.
-3.  **Web Login:**
-    *   Users navigate to the "spotyWeb" login page.
-    *   They click "Sign in with Discord", which redirects them to Discord for authorization.
-    *   Upon authorization, users are redirected back to the site where their access and refresh tokens are stored in a cookie and the database.
-    *   After Successful login user is redirected to `/PHP/index.php` which will eventually lead to their profile page.
-4.  **Database Storage:** User information and tokens are stored in the MySQL database.
+The Spoty website serves as a companion platform to the Discord bot, offering:
+
+*   **Landing Page:** A home page that introduces the bot with information and login buttons.
+*   **Features Page:** Showcases the bot's key features in a structured and visually appealing manner.
+*   **Subscription Page:** Displays a comparison of the free and premium plans, including a breakdown of the command categories.
+*   **Profile Page:** Shows the user's profile, including details fetched from a database (if user is logged in).
+*   **Dynamic Navbar:** A navbar that changes based on user authentication state (`Sign In` or user profile icon).
+
+## Technology Stack
+
+*   **Discord.py:** The core library for developing the Discord bot.
+*   **Python:** The primary programming language for the bot's backend.
+*   **HTML, CSS, JavaScript:** Used for the bot's companion website's frontend.
+*   **PHP:** Used for fetching user information in the profile page.
+*   **MySQL:** For database management.
+*   **FFmpeg:** Used for audio processing.
+
+## Setup Instructions
+
+### Discord Bot Setup
+
+1.  **Create a Discord Application:**
+    *   Go to the [Discord Developer Portal](https://discord.com/developers/applications).
+    *   Create a new application and copy its **token**.
+2.  **Invite the Bot to Your Server:**
+    *   Use the OAuth2 URL generator in the Developer Portal to invite the bot to your Discord server.
+3.  **Environment Setup:**
+    *   Install Python 3.7 or higher.
+    *   Install necessary Python packages using `pip install -r requirements.txt`.
+4.  **Configuration:**
+    *   rename the file `config.json.example` to `config.json`.
+    * Do the same with other `json.example` files and enter correct data.
+    *   Add your Discord bot's token and admin id, prefix and website info in this file. Example:
+
+        ```json
+        {
+          "discord": {
+            "TOKEN": "YOUR_DISCORD_BOT_TOKEN",
+            "ADMINID": "YOUR_DISCORD_ADMIN_ID",
+             "PREFIX" : "!",
+          },
+           "website": {
+            "PREMIUM_URL": "URL_TO_YOUR_PREMIUM_MEMBERSHIP_PAGE",
+            }
+        }
+       ```
+5.  **Run the Bot:**
+    *   Execute the main Python file (e.g., `main.py`) or any python file to run the bot.
+
+### Website Setup
+
+1.  **HTML, CSS, JS Setup:**
+    *   Copy all of the `CSS`, `Scripts` folders in your website base directory. Also ensure the `PHP` directory is in same path.
+    *   Create the `json` folder in your website base directory with json files.
+     *  Ensure `navBar` folder is placed correctly in the website base directory with navbar code.
+    *   Make sure the PHP folder contains a `config.json` file with your database credentials.
+2.  **Database Setup:**
+    *   The database will be created automatically with tables.
+    *   Add database credentials to `config.json` file in `PHP` directory
+3.  **Access your website**: Open your `index.html` file.
+    *You can create two separate files one for premium commands and other for profile page
+
+
+## Available Commands
+
+The bot includes a range of commands in categorized form. To see the list of command in the bot use `/help` command in discord channel.
+
+## Contributing
+
+If you'd like to contribute to Spoty, feel free to fork the repository and submit a pull request.
+
+## License
+
+    SEM-6 Project Spoty
+    Copyright (C) 2025  Darshit Limbad
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+## Contact
+
+For any questions or feedback, feel free to reach out at Nowhere -_-.
