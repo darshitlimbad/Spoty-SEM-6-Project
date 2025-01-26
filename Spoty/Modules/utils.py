@@ -125,7 +125,7 @@ def fetch_playlist(playlist_url: str):
     try:
         ydl_opts = {
             'format': 'bestaudio[abr>0]/bestaudio/best',  # Get the best audio with bitrate > 0
-            'quiet': True,
+            'quiet': False,  # Toggle verbose mode on
             'extract_flat': False,  # Extract full metadata
             'playlist_items': '1-',  # Fetch all items in the playlist
             'noplaylist': False,  # Ensure playlist processing is enabled
@@ -151,6 +151,7 @@ def fetch_playlist(playlist_url: str):
                                 'url': best_audio['url']
                             }
                             playlist_songs.append(song_info)
+                            logger.info(f"Successfully fetched song: {entry['title']}")
 
             return playlist_songs
 

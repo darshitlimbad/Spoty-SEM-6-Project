@@ -95,6 +95,29 @@ class Player(commands.Cog):
             logger.info("Database connection established.")
         else:
             logger.error("Database connection failed.")
+    
+    @commands.Cog.listener()
+    async def on_voice_state_update(self, member, before, after):
+        """Handles voice state updates, including when a member leaves the voice channel."""
+        
+        if before.channel and not after.channel:
+            members_in_channel = before.channel.members
+            
+            # Check if the bot is the only member left in the voice channel
+            if len(members_in_channel) == 1 and members_in_channel[0] == self.bot.user:
+                # Notify that the bot is the only member left in the voice channel
+                embed = discord.Embed(
+                    title="Voice Channel Update",
+                    description="The bot is now the only member in the voice channel. It will disconnect.",
+                    color=discord.Color.red()
+                )
+                logger.info("Bot is the only member in the voice channel. Disconnecting the bot.")
+                
+                if self.current_ctx and self.current_ctx.channel:
+                    message = await self.current_ctx.channel.send(embed=embed)
+                    tempctx = await self.bot.get_context(message)
+                    # Disconnect the bot from the voice channel
+                    await self.disconnect(tempctx)
             
     async def is_bot_connected_to_voice(self, ctx) -> bool:
         """Check if the bot is connected to a voice channel."""
@@ -745,25 +768,14 @@ class Player(commands.Cog):
             await ctx.send(embed=embed)
             logger.error(f"Something went wrong for volume command : {volume}")
     
-    @commands.Cog.listener()
-    async def on_voice_state_update(self, member, before, after):
-        """Handles voice state updates, including when a member leaves the voice channel."""
-        
-        if before.channel and not after.channel:
-            members_in_channel = before.channel.members
-            
-            # Check if the bot is the only member left in the voice channel
-            if len(members_in_channel) == 1 and members_in_channel[0] == self.bot.user:
-                # Notify that the bot is the only member left in the voice channel
-                embed = discord.Embed(
-                    title="Voice Channel Update",
-                    description="The bot is now the only member in the voice channel. It will disconnect.",
-                    color=discord.Color.red()
-                )
-                logger.info("Bot is the only member in the voice channel. Disconnecting the bot.")
-                
-                if self.current_ctx and self.current_ctx.channel:
-                    message = await self.current_ctx.channel.send(embed=embed)
-                    tempctx = await self.bot.get_context(message)
-                    # Disconnect the bot from the voice channel
-                    await self.disconnect(tempctx)
+    @commands.hybrid_command(name="sitelist", with_app_command=True)
+    async def sitelist(self, ctx):
+        """List the websites from which you can play audio."""
+        supported_sites = ["YouTube"]
+        embed = discord.Embed(
+            title="Supported Sites",
+            description="Here are the sites from which you can play audio:",
+            color=discord.Color.blue()
+        )
+        embed.add_field(name="Sites", value="\n".join(supported_sites), inline=False)
+        await ctx.send(embed=embed)

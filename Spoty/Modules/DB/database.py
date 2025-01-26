@@ -103,13 +103,10 @@ class MySQLConnection:
     
     def is_user_premium(self, user_id: str):
         """Check if a user has a premium account."""
-        
-        # idk why but this is not working i think the problem is with premium value not being updated in db will check it out letter.
         cursor = self.conn.cursor()
         cursor.execute(f"SELECT * FROM users WHERE id = {user_id} AND premium = 1")
         result = cursor.fetchone()
         self.conn.commit()
         cursor.close()
-        print(result)
         return result is not None
 

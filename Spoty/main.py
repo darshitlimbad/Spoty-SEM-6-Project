@@ -9,7 +9,7 @@ def main():
     
     # Initialize and run the Discord bot
     bot = Spoty_bot()
-    bot.run()
+    bot.run(discord_token)
 
 if __name__ == '__main__':
     main()
