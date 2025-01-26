@@ -78,7 +78,7 @@ header{
 }
 
 /* Responsive styles */
-@media (max-width: 768px) {
+@media (max-width: 968px) {
     .navbar-links {
         display: none; /* Hide nav links on smaller screens */
         flex-direction: column;

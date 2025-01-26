@@ -1,10 +1,12 @@
 <?php
+    require_once __DIR__.'/../PHP/admin/utils.php';
+
     if(session_status() == PHP_SESSION_NONE) {
         session_start();
     }
 
     if(!isset($_SESSION['user_id']) & isset($_COOKIE['refresh_token'])) {
-        header('Location: /PHP/');
+        header('Location: /PHP/index.php');
     }
 ?>
 
@@ -22,6 +24,11 @@
         <?php 
             if(isset($_SESSION['user_id'])) {
                 echo "<li><a href='/profile' class='nav-link profile'>profile</a></li>";
+                
+                if(isAdmin($_SESSION['user_id'])) {
+                    echo "<li><a href='/admin' class='nav-link admin'>Admin</a></li>";
+                }
+                
                 echo "<li><a href='/logout' class='nav-link logout'>Log Out</a></li>";
 
             }else{

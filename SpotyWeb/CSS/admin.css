@@ -1,0 +1,81 @@
+.admin-container{
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #1e1e1e;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: white;
+}
+
+.admin-container h1 {
+text-align: center;
+color: #d3d3d3; /* Dark color for text */
+}
+
+.admin-container h2 {
+text-align: center;
+color: #8a8a8a; /* Darker color */
+margin-bottom: 2rem;
+}
+
+/* Specific Table style to overwright styles from index */
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+.styled-table thead tr {
+  background-color: #009879;
+  color: #ffffff;
+  text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #444;
+}
+
+.styled-table tbody tr {
+  background-color: #222;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+  background-color: #2a2a2a;
+}
+
+
+.styled-table tbody tr:last-of-type {
+  border-bottom: 2px solid #009879;
+}
+.styled-table tbody tr.active-row {
+  font-weight: bold;
+  color: #009879;
+}
+
+/* styling the user image avatar on the table */
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%; /* Makes the image circle*/
+  margin-right: 10px;
+  display: inline-block; /* Prevent line break after image*/
+  vertical-align: middle;
+}
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 5px;
+  }
+  .delete-btn:hover{
+    transform: scale(1.2);
+  }

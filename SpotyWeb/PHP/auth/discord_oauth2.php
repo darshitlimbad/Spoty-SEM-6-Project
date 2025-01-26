@@ -117,7 +117,7 @@ if (isset($_COOKIE['refresh_token'])) {
 
 // Helper function to save user data and refresh token
 function saveUserData($userData, $accessToken, $refreshToken, $expires_in) {
-    global $pdo;
+    global $PDO;
     try {
         $sql = "INSERT INTO users (id, username, discriminator, avatar, access_token, refresh_token, token_expires_at, last_login)
                 VALUES (:id, :username, :discriminator, :avatar, :access_token, :refresh_token, :token_expires_at, :last_login)
@@ -129,7 +129,7 @@ function saveUserData($userData, $accessToken, $refreshToken, $expires_in) {
                     refresh_token = :refresh_token,
                     token_expires_at = :token_expires_at,
                     last_login = :last_login";
-        $stmt = $pdo->prepare($sql);
+        $stmt = $PDO->prepare($sql);
         $stmt->execute([
             ':id' => $userData['id'],
             ':username' => $userData['username'],

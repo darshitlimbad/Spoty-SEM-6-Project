@@ -22,14 +22,14 @@ $dbName = $config['database']['dbname'];
 
 try {
     // Connect to MySQL server (without specifying a database)
-    $pdo = new PDO("mysql:host=$dbHost", $dbUsername, $dbPassword);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $PDO = new PDO("mysql:host=$dbHost", $dbUsername, $dbPassword);
+    $PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Check if the database exists and create it if not
-    $pdo->exec("CREATE DATABASE IF NOT EXISTS $dbName");
+    $PDO->exec("CREATE DATABASE IF NOT EXISTS $dbName");
 
     // Switch to the specified database
-    $pdo->exec("USE $dbName");
+    $PDO->exec("USE $dbName");
 
     // Create the "users" table if it doesn't exist
     $tableQuery = "
@@ -45,7 +45,8 @@ try {
             premium TINYINT(1) DEFAULT 0      -- Premium status
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     ";
-    $pdo->exec($tableQuery);
+    $PDO->exec($tableQuery);
+
 } catch (PDOException $e) {
     die("Error: " . $e->getMessage()); 
 }
