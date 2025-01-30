@@ -56,6 +56,11 @@
         // Fetch users from the database
         $stmt = $PDO->query("SELECT id, username, avatar, access_token, last_login, premium FROM users");
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        usort($users, function($a) {
+            return isAdmin($a['id']) ? -1 : 1;
+        });
+        
     } catch (PDOException $e) {
         die("Database error: " . $e->getMessage());
     }
@@ -87,6 +92,7 @@
                     <th>Access Token</th>
                     <th>Last Login</th>
                     <th>Premium State</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>

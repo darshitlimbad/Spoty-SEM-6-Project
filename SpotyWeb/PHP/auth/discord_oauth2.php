@@ -89,8 +89,8 @@ if (isset($_COOKIE['refresh_token'])) {
     ]);
     $response = curl_exec($ch);
     curl_close($ch);
-
     $tokenData = json_decode($response, true);
+
     if (isset($tokenData['access_token'])) {
         // Fetch user info
         $accessToken = $tokenData['access_token'];
