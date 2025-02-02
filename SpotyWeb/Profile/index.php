@@ -116,7 +116,6 @@
             </div>
         </section>
      </div>
-    <script src="../Scripts/index.js"></script>
     <script src="../Scripts/navbar.js"></script>
 </body>
 </html>

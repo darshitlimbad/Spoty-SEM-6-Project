@@ -39,13 +39,13 @@
                            <li>Repeat current song</li>
                            <li>Control volume level</li>
                     </ul>
-                    <button class="btn btn-premium" onclick="location.assign('/php/subscribe.php?pass=gharbhegutha')"> Upgrade to Premium </button>
+                    <button class="btn btn-premium" id="btnSubscribe"> Upgrade to Premium </button>
                 </div>
             </div>
         </div>
       </section>
     </div>
-  <script src="../Scripts/index.js"></script>
   <script src="../Scripts/navbar.js"></script>
+  <script src="../Scripts/subscription.js"></script>
 </body>
 </html>
